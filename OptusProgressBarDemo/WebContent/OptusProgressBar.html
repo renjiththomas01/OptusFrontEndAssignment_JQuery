@@ -90,17 +90,17 @@
   </style>
   <script>
     $(document).ready(function() {
-      //initializing the currentProgressBar
+      /* Initializing the currentProgressBar */
       var currentProgressBar = "#progress1";
       $('#hdnCurrentProgressBar').val("#progress1");
 
-      //function to select the progress bar
+      /* function to select the progress bar */
       $('#drpProgressBar').change(function() {
         var selectedProgressbar = $('#drpProgressBar :selected').text();
         $('#hdnCurrentProgressBar').val(selectedProgressbar);
       });
 
-      //function to handle the click event of progreebuttons
+      /* function to handle the click event of progreebuttons */
       $('.btnProgress').click(function() {
         var newWidth = parseInt($(this).text());
         var selectedProgressBarid = null;
