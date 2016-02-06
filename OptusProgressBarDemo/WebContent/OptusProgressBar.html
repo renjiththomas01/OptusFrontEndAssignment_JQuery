@@ -90,11 +90,11 @@
   </style>
   <script>
     $(document).ready(function() {
-      //initializing the currentProgressbar
+      //initializing the currentProgressBar
       var currentProgressBar = "#progress1";
       $('#hdnCurrentProgressBar').val("#progress1");
 
-      //function to select the progree bar
+      //function to select the progress bar
       $('#drpProgressBar').change(function() {
         var selectedProgressbar = $('#drpProgressBar :selected').text();
         $('#hdnCurrentProgressBar').val(selectedProgressbar);
@@ -102,9 +102,10 @@
 
       //function to handle the click event of progreebuttons
       $('.btnProgress').click(function() {
-        var newwidth = parseInt($(this).text());
+        var newWidth = parseInt($(this).text());
         var selectedProgressBarid = null;
-        var oldwidth = 0;
+        var oldWidth = 0;
+        //Retrieve the selected progress bar value
         currentprogressbar = $('#hdnCurrentProgressBar').val();
         if (currentprogressbar == "#progress1") {
           selectedProgressBarid = $('#firstProgressBar');
@@ -113,17 +114,21 @@
         } else if (currentprogressbar == "#progress3") {
           selectedProgressBarid = $('#thirdProgressBar');
         }
-        progress(newwidth, selectedProgressBarid);
+        //Call progress function to display the progress of corresponding Bar
+        progress(newWidth, selectedProgressBarid);
       });
 
-      //function to show the progress and animation
-      function progress(newwidth, selectedProgressBarid) {
-        var changedWidth = newwidth * selectedProgressBarid.width() / 100;
-        var oldwidth = selectedProgressBarid.find('div').width();
-        var newwidth = changedWidth + oldwidth;
-        var percentage = parseInt((newwidth / selectedProgressBarid.width()) * 100);
+      //Function to show the progress and animation. 
+      function progress(newWidth, selectedProgressBarid) {
+        var changedWidth = newWidth * selectedProgressBarid.width() / 100;
+        var oldWidth = selectedProgressBarid.find('div').width();
+        //Set the new width as the sum of current width and changed width
+        var newWidth = changedWidth + oldWidth;
+        //Get the percentage increment for the progress bar
+        var percentage = parseInt((newWidth / selectedProgressBarid.width()) * 100);
+        //Set the animation with small time delay for width calculation
         selectedProgressBarid.find('div').animate({
-          width: newwidth
+          width: newWidth
         }, 100);
         if (percentage > 0) {
           selectedProgressBarid.find('span').text(percentage + "% ")
@@ -131,6 +136,7 @@
           selectedProgressBarid.find('span').text("")
           
         }
+        //Set the color based on the changed value
        selectedProgressBarid.find('div').css({'background': '#88F1F1'});
         if (percentage > 100) {
           selectedProgressBarid.find('div').css({
@@ -158,18 +164,21 @@
 <body>
   <div style="font-size:medium;font-weight:bold">Optus Progress Bar Demo</div>
   <br />
+  <!-- Set the progress divisions for showing progress bar -->
   <div id="firstProgressBar" data-value="25"><span>25%</span></div>
   <br />
   <div id="secondProgressBar" data-value="50"><span>50%</span></div>
   <br />
   <div id="thirdProgressBar" data-value="75"><span>75%</span></div>
 
+	<!-- Set the drop down list -->
   <div style="padding-top: 25px">
     <select id="drpProgressBar">
       <option>#progress1</option>
       <option>#progress2</option>
       <option>#progress3</option>
     </select>
+    <!-- Set the buttons -->
     <button id="btnMinus25" class="btnProgress">-25</button>
     <button id="btnMinus10" class="btnProgress">-10</button>
     <button id="btnPlus10" class="btnProgress">+10</button>
