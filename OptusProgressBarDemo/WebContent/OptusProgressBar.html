@@ -1,135 +1,169 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+
 <head>
+  <meta charset="utf-8">
+  <title>Optus Progress Bar Demo</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
   <style>
-    #firstProgressContainer {
-      width: 300px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      overflow: hidden;
-      display: inline-block;
-      margin: 0px 10px 5px 5px;
-      vertical-align: top;
-    }    
     #firstProgressBar {
-      color: #fff;
-      text-align: left;
+      width: 400px;
       height: 25px;
-      width: 75px;
-      background-color: #0ba1b5;
-      border-radius: 3px;
-    }    
-    #secondProgressContainer {
-      width: 300px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      overflow: hidden;
-      display: inline-block;
-      margin: 0px 10px 5px 5px;
-      vertical-align: top;
-    }    
+      border: 1px solid #111;
+      background-color: white;
+    }
+    
+    #firstProgressBar div {
+      height: 100%;
+      color: #fff;
+      line-height: 25px;
+      width: 0;
+      background-color: #88F1F1;
+    }
+    
     #secondProgressBar {
-      color: #fff;
-      text-align: left;
+      width: 400px;
       height: 25px;
-      width: 150px;
-      background-color: #0ba1b5;
-      border-radius: 3px;
-    }    
-    #thirdProgressContainer {
-      width: 300px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      overflow: hidden;
-      display: inline-block;
-      margin: 0px 10px 5px 5px;
-      vertical-align: top;
-    }    
+      border: 1px solid #111;
+      background-color: white;
+    }
+    
+    #secondProgressBar div {
+      height: 100%;
+      color: #fff;
+      line-height: 25px;
+      width: 0;
+      background-color: #88F1F1;
+    }
+    
     #thirdProgressBar {
-      color: #fff;
-      text-align: left;
+      width: 400px;
       height: 25px;
-      width: 225px;
-      background-color: #0ba1b5;
-      border-radius: 3px;
+      border: 1px solid #111;
+      background-color: white;
+    }
+    
+    #thirdProgressBar div {
+      height: 100%;
+      color: #fff;
+      line-height: 25px;
+      width: 0;
+      background-color: #88F1F1;
+    }
+    
+    .ui-widget-header {
+      background: #88F1F1;
+    }
+    
+    #firstProgressBar span {
+      position: static;
+      margin-top: -2em;
+      text-align: center;
+      display: block;
+      line-height: 2.5em;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    
+    #secondProgressBar span {
+      position: static;
+      margin-top: -2em;
+      text-align: center;
+      display: block;
+      line-height: 2.5em;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    
+    #thirdProgressBar span {
+      position: static;
+      margin-top: -2em;
+      text-align: center;
+      display: block;
+      line-height: 2.5em;
+      padding-left: 10px;
+      padding-right: 10px;
     }
   </style>
   <script>
     $(document).ready(function() {
+      //initializing the currentProgressbar
       var currentProgressBar = "#progress1";
       $('#hdnCurrentProgressBar').val("#progress1");
 
-      $('#firstProgressBar').html(($('#firstProgressBar').width() / $('#firstProgressContainer').width()) * 100 + '%');
-      $('#secondProgressBar').html(($('#secondProgressBar').width() / $('#secondProgressContainer').width()) * 100 + '%');
-      $('#thirdProgressBar').html(($('#thirdProgressBar').width() / $('#thirdProgressContainer').width()) * 100 + '%');
-      //var selectedProgressBarid = $('#firstProgressBar');
-
+      //function to select the progree bar
       $('#drpProgressBar').change(function() {
         var selectedProgressbar = $('#drpProgressBar :selected').text();
         $('#hdnCurrentProgressBar').val(selectedProgressbar);
       });
 
+      //function to handle the click event of progreebuttons
       $('.btnProgress').click(function() {
-
-        var width;
-        var selectedProgressBarContainerid = null;
+        var newwidth = parseInt($(this).text());
         var selectedProgressBarid = null;
         var oldwidth = 0;
         currentprogressbar = $('#hdnCurrentProgressBar').val();
-
         if (currentprogressbar == "#progress1") {
           selectedProgressBarid = $('#firstProgressBar');
-          selectedProgressBarContainerid = $('#firstProgressContainer');
-          oldwidth = selectedProgressBarid.width();
-          width = parseInt($(this).text()) * selectedProgressBarContainerid.width() / 100;
-
         } else if (currentprogressbar == "#progress2") {
           selectedProgressBarid = $('#secondProgressBar');
-          selectedProgressBarContainerid = $('#secondProgressContainer');
-          oldwidth = selectedProgressBarid.width();
-          width = parseInt($(this).text()) * selectedProgressBarContainerid.width() / 100;
         } else if (currentprogressbar == "#progress3") {
-
           selectedProgressBarid = $('#thirdProgressBar');
-          selectedProgressBarContainerid = $('#thirdProgressContainer');
-          oldwidth = selectedProgressBarid.width();
-          width = parseInt($(this).text()) * selectedProgressBarContainerid.width() / 100;
         }
-        var newwidth = width + oldwidth;
-        selectedProgressBarid.width(newwidth);
-
-        selectedProgressBarid.html(parseInt((newwidth / selectedProgressBarContainerid.width()) * 100) + '%');
-        selectedProgressBarid.css('text-align', 'left');
-        selectedProgressBarid.css("background-color", "#0ba1b5");
-        if (newwidth > selectedProgressBarContainerid.width()) {
-          selectedProgressBarid.css("background-color", "red");
-          selectedProgressBarid.css('text-align', 'left');
-        }
+        progress(newwidth, selectedProgressBarid);
       });
+
+      //function to show the progress and animation
+      function progress(newwidth, selectedProgressBarid) {
+        var changedWidth = newwidth * selectedProgressBarid.width() / 100;
+        var oldwidth = selectedProgressBarid.find('div').width();
+        var newwidth = changedWidth + oldwidth;
+        var percentage = parseInt((newwidth / selectedProgressBarid.width()) * 100);
+        selectedProgressBarid.find('div').animate({
+          width: newwidth
+        }, 100);
+        if (percentage > 0) {
+          selectedProgressBarid.find('span').text(percentage + "% ")
+        } else {
+          selectedProgressBarid.find('span').text("")
+          
+        }
+       selectedProgressBarid.find('div').css({'background': '#88F1F1'});
+        if (percentage > 100) {
+          selectedProgressBarid.find('div').css({
+            'background': 'red'
+          });
+        }
+      }
+      //initializing the first values of progressbar
+      $("#firstProgressBar").progressbar({
+        value: 25
+      }).children("span").appendTo($("#firstProgressBar"));
+
+      $("#secondProgressBar").progressbar({
+        value: 50
+      }).children("span").appendTo($("#secondProgressBar"));
+
+      $("#thirdProgressBar").progressbar({
+        value: 75
+      }).children("span").appendTo($("#thirdProgressBar"));
     });
   </script>
+
 </head>
 
 <body>
   <div style="font-size:medium;font-weight:bold">Optus Progress Bar Demo</div>
   <br />
-  <div id="firstProgressContainer">
-    <div id="firstProgressBar">
-    </div>
-  </div>
+  <div id="firstProgressBar" data-value="25"><span>25%</span></div>
   <br />
-  <div id="secondProgressContainer">
-    <div id="secondProgressBar">
-    </div>
-  </div>
+  <div id="secondProgressBar" data-value="50"><span>50%</span></div>
   <br />
-  <div id="thirdProgressContainer">
-    <div id="thirdProgressBar">
-    </div>
-  </div>
+  <div id="thirdProgressBar" data-value="75"><span>75%</span></div>
+
   <div style="padding-top: 25px">
     <select id="drpProgressBar">
       <option>#progress1</option>
@@ -143,4 +177,5 @@
   </div>
   <input type="hidden" id="hdnCurrentProgressBar" />
 </body>
+
 </html>
